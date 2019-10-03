@@ -480,6 +480,7 @@
 #include "../sdp-utils.h"
 #include "../utils.h"
 #include "../ip-utils.h"
+#include "../ice.h"
 
 
 /* Plugin information */
@@ -2089,12 +2090,14 @@ static void janus_sip_hangup_media_internal(janus_plugin_session *handle) {
 		session->media.ready = FALSE;
 		session->media.on_hold = FALSE;
 		janus_sip_call_update_status(session, janus_sip_call_status_closing);
-        JANUS_LOG(LOG_INFO, "Peer connection closed: %s\n", handle->gateway_handle->hangup_reason);
-        char reasonHeader[255];
-        if (handle->gateway_handle->hangup_reason != NULL) {
-            g_snprintf(reasonHeader, 255, "reason: %s\r\n", handle->gateway_handle->hangup_reason);
+		/* Get Hangup Reason */
+        janus_ice_handle *ice_handle = (janus_ice_handle *)handle->gateway_handle;
+        JANUS_LOG(LOG_INFO, "Peer connection closed: %s\n", ice_handle->hangup_reason);
+        char reason_header[255];
+        if (strlen(ice_handle->hangup_reason) > 0) {
+            g_snprintf(reason_header, 255, "reason: %s\r\n", ice_handle->hangup_reason);
         }
-        nua_bye(session->stack->s_nh_i, TAG_IF(strlen(reasonHeader) > 0, SIPTAG_HEADER_STR(reasonHeader)), TAG_END());
+        nua_bye(session->stack->s_nh_i, TAG_IF(strlen(reason_header) > 0, SIPTAG_HEADER_STR(reason_header)), TAG_END());
 		g_free(session->callee);
 		session->callee = NULL;
 		/* Notify the operation */
