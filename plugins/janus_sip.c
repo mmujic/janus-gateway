@@ -2095,7 +2095,8 @@ static void janus_sip_hangup_media_internal(janus_plugin_session *handle) {
 			JANUS_LOG(LOG_INFO, "Peer connection closed: %s\n", handle->hangup_reason);
 			g_snprintf(reason_header, "SIP;cause=200;text=\"%s\"", handle->hangup_reason);
 		}
-		nua_bye(session->stack->s_nh_i, TAG_IF(strlen(reason_header) > 0, SIPTAG_REASON_STR(reason_header)), TAG_END());
+		JANUS_LOG(LOG_INFO, "Hangup reason: %s\n", reason_header);
+		nua_bye(session->stack->s_nh_i, SIPTAG_REASON_STR("SIP;cause=200;text=\"Peer connection closed.\"")), TAG_END());
 		g_free(session->callee);
 		session->callee = NULL;
 		/* Notify the operation */
