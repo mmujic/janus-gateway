@@ -235,6 +235,8 @@ struct janus_plugin_session {
 	volatile gint stopped;
 	/*! \brief Reference counter for this instance */
 	janus_refcount ref;
+	/*! \brief Reason */
+    const gchar *hangup_reason;
 };
 
 /*! \brief The plugin session and callbacks interface */
