@@ -2093,7 +2093,7 @@ static void janus_sip_hangup_media_internal(janus_plugin_session *handle) {
 		char reason_header[255];
 		if (handle->hangup_reason != NULL && strlen(handle->hangup_reason) > 0) {
 			JANUS_LOG(LOG_INFO, "Peer connection closed: %s\n", handle->hangup_reason);
-			g_snprintf(reason_header, "Reason: SIP ;cause=200 ;text=\"%s\"", handle->hangup_reason);
+			g_snprintf(reason_header, "SIP;cause=200;text=\"%s\"", handle->hangup_reason);
 		}
 		nua_bye(session->stack->s_nh_i, TAG_IF(strlen(reason_header) > 0, SIPTAG_REASON_STR(reason_header)), TAG_END());
 		g_free(session->callee);
