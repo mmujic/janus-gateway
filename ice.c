@@ -3868,7 +3868,7 @@ static gboolean janus_ice_outgoing_traffic_handle(janus_ice_handle *handle, janu
 			handle->handle_id, plugin ? plugin->get_name() : "??");
 		if(plugin != NULL && handle->app_handle != NULL) {
 			handle->app_handle->hangup_reason = "Peer connection gone.";
-		    plugin->hangup_media(handle->app_handle);
+			plugin->hangup_media(handle->app_handle);
 		}
 		/* Get rid of the attached sources */
 		if(handle->rtcp_source) {
